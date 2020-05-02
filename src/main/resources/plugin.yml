@@ -1,0 +1,10 @@
+name: DoorLock
+author: Hancho
+version: 1.0.0
+main: org.hancho.plugin.nukkit.doorlock.DoorLock
+api: [1.0.0]
+
+commands:
+    문잠금:
+     description: 문을 나만 열수 있도록 합니다.
+     permission: 'true'
