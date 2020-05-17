@@ -50,14 +50,13 @@ public class DoorLock extends PluginBase implements Listener {
             locationString = block.getLevel().getName() + ":" + block.getLocationHash();
         }else {
             Location location = block.getLocation();
-            locationString = new StringBuilder()
-                    .append(block.getLevel().getName())
-                    .append(":")
-                    .append(location.getFloorX())
-                    .append(":")
-                    .append(location.getFloorY() - 1)
-                    .append(":")
-                    .append(location.getFloorZ()).toString();
+            locationString = block.getLevel().getName() +
+                    ":" +
+                    location.getFloorX() +
+                    ":" +
+                    (location.getFloorY() - 1) +
+                    ":" +
+                    location.getFloorZ();
         }
         return locationString;
     }
@@ -67,7 +66,7 @@ public class DoorLock extends PluginBase implements Listener {
         if(!this.queue.contains(ev.getPlayer().getName())) return;
         Block block = ev.getBlock();
         if(this.doorList.contains(block.getId())){
-            String key = this.getKey(ev.getBlock());
+            String key = getKey(ev.getBlock());
             this.lockedDoor.put(key, ev.getPlayer().getName());
             ev.getPlayer().sendMessage("§f[ §g! §f] 문이 잠궈졌습니다.");
         }
@@ -83,13 +82,13 @@ public class DoorLock extends PluginBase implements Listener {
         public static int DOOR_POWERED_BIT = 2;*/
         Block block = ev.getBlock();
         if(!this.doorList.contains(block.getId())) return;
-        String locationString = this.getKey(block);
+        String locationString = getKey(block);
         if(!this.lockedDoor.containsKey(locationString)) return;
         String owner = (String) this.lockedDoor.get(locationString);
         if(!ev.getPlayer().getName().equals(owner)) {
             ev.getPlayer().sendMessage("§f[ §c! §f] 문과 상호작용할 권한이 없습니다. 소유자 :§d "  + owner);
             ev.setCancelled();
-            return;
+            //return;
         }
     }
 
@@ -98,7 +97,7 @@ public class DoorLock extends PluginBase implements Listener {
         if(!ev.getPlayer().isOp()) return;
         Block block = ev.getBlock();
         if(!this.doorList.contains(block.getId())) return;
-        String locationString = this.getKey(block);
+        String locationString = getKey(block);
         this.lockedDoor.remove(locationString);
     }
 
